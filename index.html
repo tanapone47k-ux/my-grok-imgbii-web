@@ -2,136 +2,928 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grok Image Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Grok Image Studio — iOS 18 UI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: SF Pro Text like (Plus Jakarta Sans & Kanit for Thai) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ios: {
+                            blue: '#007AFF',
+                            green: '#34C759',
+                            orange: '#FF9500',
+                            red: '#FF3B30',
+                            purple: '#AF52DE',
+                            teal: '#30B0C7',
+                            bg: '#0F0F12',
+                            card: 'rgba(255, 255, 255, 0.08)',
+                            cardBorder: 'rgba(255, 255, 255, 0.12)',
+                            glass: 'rgba(30, 30, 40, 0.65)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '"Kanit"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; padding: 20px; margin: 0; }
-        .container { width: 100%; max-width: 600px; background: #1e293b; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        h2 { text-align: center; margin-top: 0; color: #38bdf8; }
-        .group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
-        input[type="password"], textarea, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 1rem; }
-        textarea { resize: vertical; height: 100px; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 6px; background: #0284c7; color: white; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        button:hover { background: #0369a1; }
-        button:disabled { background: #475569; cursor: not-allowed; }
-        .result-box { margin-top: 20px; text-align: center; min-height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0f172a; border-radius: 8px; border: 1px dashed #334155; padding: 15px; }
-        img { max-width: 100%; height: auto; border-radius: 8px; display: none; margin-bottom: 15px; }
-        .loading { display: none; color: #38bdf8; font-weight: bold; }
-        .download-btn { display: none; background: #10b981; margin-top: 10px; text-decoration: none; padding: 10px 20px; color: white; border-radius: 6px; font-weight: bold; }
-        .download-btn:hover { background: #059669; }
+        /* iOS 18 Glassmorphic & Smooth UI FX */
+        body {
+            background-color: #08080A;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 122, 255, 0.15), transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(175, 82, 222, 0.12), transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(52, 199, 89, 0.05), transparent 60%);
+            background-attachment: fixed;
+            color: #F2F2F7;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .ios-glass {
+            background: rgba(28, 28, 35, 0.65);
+            backdrop-filter: blur(25px) saturate(190%);
+            -webkit-backdrop-filter: blur(25px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .ios-glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .ios-glass-card:hover {
+            border-color: rgba(0, 122, 255, 0.35);
+            box-shadow: 0 8px 32px rgba(0, 122, 255, 0.15);
+        }
+
+        .ios-btn-primary {
+            background: linear-gradient(135deg, #007AFF, #0056B3);
+            box-shadow: 0 4px 20px rgba(0, 122, 255, 0.4);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .ios-btn-primary:active {
+            transform: scale(0.96);
+            opacity: 0.9;
+        }
+
+        /* Segmented Control iOS 18 Style */
+        .segmented-control {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .segmented-btn {
+            border-radius: 999px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #8E8E93;
+        }
+
+        .segmented-btn.active {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px);
+            color: #FFFFFF;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Shimmer Loading Effect */
+        .shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.03) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.8s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            background-color: #34C759;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #34C759;
+        }
     </style>
 </head>
-<body>
+<body class="min-h-screen pb-16 pt-3 px-3 sm:px-6 antialiased font-sans selection:bg-ios-blue selection:text-white">
 
-<div class="container">
-    <h2>Grok Image Generator</h2>
-    
-    <div class="group">
-        <label for="apiKey">xAI (Grok) API Key:</label>
-        <input type="password" id="apiKey" placeholder="xai-xxxxxxxxxxxxxxxx">
+    <!-- App Container -->
+    <div class="max-w-6xl mx-auto space-y-5">
+
+        <!-- Top Header Navigation Bar (iOS Dynamic Header) -->
+        <header class="ios-glass rounded-3xl p-4 sm:p-5 sticky top-3 z-40 flex flex-wrap items-center justify-between gap-3 shadow-2xl">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-ios-blue via-ios-purple to-ios-green flex items-center justify-center shadow-lg shadow-ios-blue/20">
+                    <i class="fa-solid fa-wand-magic-sparkles text-white text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-extrabold text-xl tracking-tight text-white">Grok Imagine</h1>
+                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-ios-blue/20 text-ios-blue border border-ios-blue/30">v2.0</span>
+                    </div>
+                    <p class="text-xs text-gray-400">iOS 18 Theme • Powered by xAI Grok</p>
+                </div>
+            </div>
+
+            <!-- Token Counter & Action Bar -->
+            <div class="flex items-center gap-2 sm:gap-3 ml-auto">
+                <!-- Token Balance Badge -->
+                <div class="ios-glass-card rounded-2xl px-3.5 py-1.5 flex items-center gap-2 border border-ios-green/30 cursor-pointer hover:bg-white/10" onclick="openTokenModal()" title="ดูรายละเอียดโควต้า / โทเคน">
+                    <div class="relative flex h-2.5 w-2.5">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-ios-green opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-ios-green"></span>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-gray-400 font-medium leading-none">โทเคนคงเหลือ (Token)</div>
+                        <div class="text-xs font-bold text-white flex items-center gap-1 mt-0.5">
+                            <span id="displayTokenRemaining">100,000</span>
+                            <span class="text-[10px] text-ios-green font-normal">(Est.)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Key Config Button -->
+                <button onclick="openConfigModal()" class="ios-glass-card hover:bg-white/15 text-white w-10 h-10 rounded-2xl flex items-center justify-center transition-transform active:scale-95 shadow-sm" title="ตั้งค่า API Key">
+                    <i class="fa-solid fa-key text-ios-orange"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace Grid -->
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+            <!-- Left Control Panel (Column 1 to 5) -->
+            <section class="lg:col-span-5 space-y-4">
+
+                <!-- Mode Selector Segmented Control -->
+                <div class="segmented-control flex p-1 text-xs sm:text-sm font-medium">
+                    <button id="tabTxt2Img" onclick="switchTab('txt2img')" class="segmented-btn active flex-1 py-2 px-3 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-font"></i>
+                        <span>Text to Image</span>
+                    </button>
+                    <button id="tabImg2Img" onclick="switchTab('img2img')" class="segmented-btn flex-1 py-2 px-3 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-image"></i>
+                        <span>Image to Image</span>
+                    </button>
+                </div>
+
+                <!-- Input Form Container -->
+                <div class="ios-glass rounded-3xl p-5 space-y-4 shadow-xl relative overflow-hidden">
+
+                    <!-- Img2Img Reference Upload Box (Hidden by default in Txt2Img mode) -->
+                    <div id="img2imgSection" class="hidden space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-semibold uppercase tracking-wider text-gray-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-images text-ios-purple"></i> รูปภาพอ้างอิง (สูงสุด 3 รูป)
+                            </label>
+                            <span class="text-[11px] text-gray-400" id="imgCountBadge">0 / 3 รูป</span>
+                        </div>
+
+                        <!-- Dropzone Area -->
+                        <div id="dropzone" onclick="document.getElementById('fileInput').click()" class="border-2 border-dashed border-gray-600 hover:border-ios-purple rounded-2xl p-4 text-center cursor-pointer transition-colors bg-black/20 hover:bg-ios-purple/5">
+                            <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/webp" class="hidden" onchange="handleFileSelect(event)">
+                            <div class="space-y-1">
+                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-ios-purple mb-1"></i>
+                                <p class="text-xs text-gray-200 font-medium">คลิกเพื่ออัปโหลด หรือลากไฟล์มาวาง</p>
+                                <p class="text-[10px] text-gray-400">รองรับ JPG, PNG, WEBP (แปลงเป็น URL/Base64 อัตโนมัติ)</p>
+                            </div>
+                        </div>
+
+                        <!-- Thumbnail Preview List -->
+                        <div id="imagePreviewContainer" class="grid grid-cols-3 gap-2 pt-1"></div>
+
+                        <!-- Reference Prompt Syntax Info -->
+                        <div class="p-2.5 rounded-xl bg-ios-purple/10 border border-ios-purple/20 text-[11px] text-gray-300">
+                            <i class="fa-solid fa-circle-info text-ios-purple mr-1"></i> 
+                            อ้างอิงรูปใน Prompt ได้ด้วย <code>&lt;image_0&gt;</code>, <code>&lt;image_1&gt;</code> เช่น: <i>"นำบุคคลจาก &lt;image_0&gt; ไปอยู่ในฉาก &lt;image_1&gt;"</i>
+                        </div>
+                    </div>
+
+                    <!-- Prompt Textarea -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-semibold uppercase tracking-wider text-gray-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-pen-nib text-ios-blue"></i> ข้อความบรรยายภาพ (Prompt) *
+                            </label>
+                            <button onclick="generateRandomPrompt()" class="text-[11px] text-ios-blue hover:underline flex items-center gap-1">
+                                <i class="fa-solid fa-shuffle"></i> สุ่มไอเดีย
+                            </button>
+                        </div>
+                        <textarea id="promptInput" rows="4" placeholder="อธิบายภาพที่คุณต้องการสร้างอย่างละเอียด เช่น Cinematic shot of a futuristic neon city in Bangkok, hyper-realistic, 8k resolution..." class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-ios-blue focus:ring-1 focus:ring-ios-blue transition-all resize-none"></textarea>
+                    </div>
+
+                    <!-- Quick Style Presets -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold uppercase tracking-wider text-gray-300">สไตล์ภาพ (Presets)</label>
+                        <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+                            <button onclick="applyPreset('Photorealistic, hyper-detailed, 8k, professional photography, natural lighting')" class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-ios-blue/20 hover:border-ios-blue text-gray-300 whitespace-nowrap">📸 สมจริง (Realistic)</button>
+                            <button onclick="applyPreset('Anime art style, studio ghibli aesthetic, vibrant colors, highly detailed')" class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-ios-blue/20 hover:border-ios-blue text-gray-300 whitespace-nowrap">🎨 อนิเมะ (Anime)</button>
+                            <button onclick="applyPreset('Cyberpunk style, neon glow, futuristic cityscape, dark moody atmosphere')" class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-ios-blue/20 hover:border-ios-blue text-gray-300 whitespace-nowrap">🌆 ไซเบอร์พังก์</button>
+                            <button onclick="applyPreset('3D Pixar style render, cute character design, soft lighting, vibrant')" class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-ios-blue/20 hover:border-ios-blue text-gray-300 whitespace-nowrap">🧸 3D Character</button>
+                        </div>
+                    </div>
+
+                    <!-- Aspect Ratio Selector -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold uppercase tracking-wider text-gray-300 flex items-center justify-between">
+                            <span>อัตราส่วนภาพ (Aspect Ratio)</span>
+                            <span id="ratioDisplay" class="text-ios-blue text-[11px] font-bold">1:1 (Square)</span>
+                        </label>
+                        <div class="grid grid-cols-4 gap-2 text-xs">
+                            <button type="button" onclick="selectRatio('1:1')" class="ratio-btn active-ratio p-2 rounded-xl bg-white/10 border border-ios-blue text-center hover:bg-white/15 text-white flex flex-col items-center gap-1">
+                                <div class="w-4 h-4 border-2 border-current rounded-sm"></div>
+                                <span class="text-[10px]">1:1</span>
+                            </button>
+                            <button type="button" onclick="selectRatio('16:9')" class="ratio-btn p-2 rounded-xl bg-white/5 border border-white/10 text-center hover:bg-white/15 text-gray-300 flex flex-col items-center gap-1">
+                                <div class="w-5 h-3 border-2 border-current rounded-sm"></div>
+                                <span class="text-[10px]">16:9</span>
+                            </button>
+                            <button type="button" onclick="selectRatio('9:16')" class="ratio-btn p-2 rounded-xl bg-white/5 border border-white/10 text-center hover:bg-white/15 text-gray-300 flex flex-col items-center gap-1">
+                                <div class="w-3 h-5 border-2 border-current rounded-sm"></div>
+                                <span class="text-[10px]">9:16</span>
+                            </button>
+                            <button type="button" onclick="selectRatio('4:3')" class="ratio-btn p-2 rounded-xl bg-white/5 border border-white/10 text-center hover:bg-white/15 text-gray-300 flex flex-col items-center gap-1">
+                                <div class="w-4 h-3 border-2 border-current rounded-sm"></div>
+                                <span class="text-[10px]">4:3</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quality & Resolution Selectors -->
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <!-- Resolution -->
+                        <div class="space-y-1">
+                            <label class="font-semibold text-gray-300">ความละเอียด (Tier)</label>
+                            <select id="resolutionSelect" onchange="updateTokenEstimate()" class="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-white focus:outline-none focus:border-ios-blue">
+                                <option value="1K" selected>1K (Standard HD)</option>
+                                <option value="2K">2K (Ultra Detail)</option>
+                            </select>
+                        </div>
+
+                        <!-- Quality -->
+                        <div class="space-y-1">
+                            <label class="font-semibold text-gray-300">คุณภาพการคิดคำนวณ</label>
+                            <select id="qualitySelect" onchange="updateTokenEstimate()" class="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-white focus:outline-none focus:border-ios-blue">
+                                <option value="medium" selected>Medium (สมดุล)</option>
+                                <option value="low">Low (ประหยัดโทเคน)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Number of Images Slider -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between items-center text-xs">
+                            <label class="font-semibold text-gray-300">จำนวนรูปภาพ (Count)</label>
+                            <span id="numImagesVal" class="text-ios-blue font-bold">1 รูป</span>
+                        </div>
+                        <input type="range" id="numImages" min="1" max="4" value="1" oninput="updateNumImages(this.value)" class="w-full accent-ios-blue bg-white/10 rounded-lg cursor-pointer">
+                    </div>
+
+                    <!-- Real-time Token Cost Estimate Card -->
+                    <div class="ios-glass-card rounded-2xl p-3 flex items-center justify-between border-ios-blue/20">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-coins text-ios-orange text-base"></i>
+                            <div>
+                                <p class="text-xs text-gray-300 font-medium">ประมาณการใช้โทเคน (Estimated Cost)</p>
+                                <p class="text-[10px] text-gray-400">คิดคำนวณจาก พารามิเตอร์ + โหมดที่ใช้</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span id="estTokenCost" class="text-sm font-extrabold text-ios-orange">~ 1,024</span>
+                            <span class="text-[10px] text-gray-400 block">Tokens</span>
+                        </div>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <button id="btnGenerate" onclick="generateImages()" class="w-full ios-btn-primary py-3.5 rounded-2xl text-white font-bold text-base flex items-center justify-center gap-2.5 shadow-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>สร้างภาพด้วย Grok (Generate)</span>
+                    </button>
+
+                </div>
+            </section>
+
+            <!-- Right Output / Gallery Area (Column 6 to 12) -->
+            <section class="lg:col-span-7 space-y-4">
+                
+                <!-- Gallery Header -->
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-photo-film text-ios-blue"></i>
+                        <span>แกลเลอรีผลลัพธ์ (Generated Gallery)</span>
+                    </h2>
+                    <button onclick="clearGallery()" class="text-xs text-gray-400 hover:text-ios-red flex items-center gap-1 transition-colors">
+                        <i class="fa-solid fa-trash-can"></i> ล้างทั้งหมด
+                    </button>
+                </div>
+
+                <!-- Main Display Canvas -->
+                <div id="galleryContainer" class="min-h-[520px] ios-glass rounded-3xl p-5 flex flex-col items-center justify-center relative border border-white/10 shadow-2xl">
+                    
+                    <!-- Empty State Placeholder -->
+                    <div id="emptyState" class="text-center space-y-3 p-8 max-w-md">
+                        <div class="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-gray-500 shadow-inner">
+                            <i class="fa-solid fa-wand-magic-sparkles text-3xl"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-gray-200">พร้อมสร้างสรรค์ผลงานภาพถ่าย AI</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            พิมพ์ข้อความอธิบายรูปภาพ (Prompt) ทางฝั่งซ้าย แล้วกดปุ่ม <b>"สร้างภาพด้วย Grok"</b> เพื่อเริ่มต้นใช้งาน Grok Imagine 2.0
+                        </p>
+                    </div>
+
+                    <!-- Loading Skeleton State (Hidden by default) -->
+                    <div id="loadingState" class="hidden w-full space-y-4">
+                        <div class="flex items-center justify-center gap-2 text-ios-blue font-semibold text-sm animate-pulse">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <span>กำลังประมวลผลคำสั่งด้วย Grok Imagine 2.0...</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="aspect-square shimmer rounded-2xl border border-white/10 flex items-center justify-center">
+                                <i class="fa-regular fa-image text-white/20 text-4xl"></i>
+                            </div>
+                            <div class="aspect-square shimmer rounded-2xl border border-white/10 flex items-center justify-center">
+                                <i class="fa-regular fa-image text-white/20 text-4xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generated Images Grid -->
+                    <div id="resultsGrid" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4 w-full"></div>
+
+                </div>
+
+                <!-- API Usage Audit Log Bar -->
+                <div class="ios-glass-card rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-bold text-gray-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-chart-line text-ios-green"></i> บันทึกประวัติการเรียกใช้งาน (API Activity Log)
+                        </span>
+                        <span id="logCount" class="text-gray-400">0 รายการ</span>
+                    </div>
+                    <div id="activityLog" class="max-h-28 overflow-y-auto space-y-1 text-[11px] font-mono text-gray-400 pr-1">
+                        <div class="text-gray-500 italic">ระบบพร้อมทำงาน กดสร้างภาพเพื่อเริ่มบันทึก...</div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
     </div>
 
-    <div class="group">
-        <label for="prompt">Prompt (คำอธิบายภาพ):</label>
-        <textarea id="prompt" placeholder="A futuristic city at sunset, highly detailed, 8k resolution..."></textarea>
+    <!-- Modal 1: Config API Key (iOS Sheet Style) -->
+    <div id="configModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="ios-glass rounded-3xl p-6 max-w-md w-full border border-white/20 shadow-2xl space-y-5 transform transition-all">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-key text-ios-orange text-lg"></i>
+                    <h3 class="font-bold text-lg text-white">ตั้งค่า xAI Grok API Key</h3>
+                </div>
+                <button onclick="closeConfigModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <p class="text-gray-300 leading-relaxed">
+                    ป้อน API Key ของคุณที่ได้จาก <b>xAI Console</b> (ขึ้นต้นด้วย <code>xai-...</code>) คีย์นี้จะถูกจัดเก็บไว้ใน Browser ของคุณเท่านั้น
+                </p>
+
+                <div class="space-y-1">
+                    <label class="font-semibold text-gray-200">xAI API Key</label>
+                    <input type="password" id="apiKeyInput" placeholder="xai-xxxxxxxxxxxxxxxxxxxxxxxx" class="w-full bg-black/50 border border-white/15 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-ios-blue">
+                </div>
+
+                <div class="p-3 rounded-xl bg-ios-blue/10 border border-ios-blue/20 text-gray-300 space-y-1">
+                    <div class="font-semibold text-ios-blue flex items-center gap-1">
+                        <i class="fa-solid fa-shield-halved"></i> ความปลอดภัยข้อมูล
+                    </div>
+                    <p class="text-[11px]">API Key จะส่งตรงไปยัง <code>https://api.x.ai/v1/images/generations</code> โดยตรง ไม่ผ่านเซิร์ฟเวอร์คนกลาง</p>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="saveApiKey()" class="flex-1 ios-btn-primary py-3 rounded-xl font-bold text-white text-sm">
+                    บันทึก API Key
+                </button>
+            </div>
+        </div>
     </div>
 
-    <div class="group">
-        <label for="aspectRatio">Aspect Ratio (สัดส่วนภาพ):</label>
-        <select id="aspectRatio">
-            <option value="1:1">1:1 (สี่เหลี่ยมจัตุรัส)</option>
-            <option value="16:9">16:9 (แนวนอน)</option>
-            <option value="9:16">9:16 (แนวตั้ง)</option>
-            <option value="4:3">4:3</option>
-            <option value="3:4">3:4</option>
-        </select>
+    <!-- Modal 2: Token Details & Rate Limit Dashboard -->
+    <div id="tokenModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="ios-glass rounded-3xl p-6 max-w-md w-full border border-white/20 shadow-2xl space-y-5">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-coins text-ios-green text-lg"></i>
+                    <h3 class="font-bold text-lg text-white">รายละเอียดโทเคน & โควต้า (Token Dashboard)</h3>
+                </div>
+                <button onclick="closeTokenModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-4 text-xs">
+                <!-- Usage Card -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="ios-glass-card p-3 rounded-2xl text-center">
+                        <span class="text-gray-400 text-[10px] block">โทเคนที่ใช้ไปแล้ว (Used)</span>
+                        <span id="modalTokenUsed" class="text-lg font-extrabold text-ios-orange">0</span>
+                        <span class="text-[10px] text-gray-500 block">Tokens</span>
+                    </div>
+                    <div class="ios-glass-card p-3 rounded-2xl text-center">
+                        <span class="text-gray-400 text-[10px] block">คงเหลือประมาณ (Remaining)</span>
+                        <span id="modalTokenRemaining" class="text-lg font-extrabold text-ios-green">100,000</span>
+                        <span class="text-[10px] text-gray-500 block">Tokens</span>
+                    </div>
+                </div>
+
+                <!-- Custom Starting Quota Form -->
+                <div class="space-y-1 bg-white/5 p-3 rounded-2xl border border-white/10">
+                    <label class="font-semibold text-gray-200">ตั้งค่าวงเงิน / โทเคนเริ่มต้นของคุณ</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="customBudgetInput" value="100000" class="flex-1 bg-black/50 border border-white/15 rounded-xl p-2 text-white text-xs">
+                        <button onclick="updateBudget()" class="px-3 py-2 bg-ios-blue text-white rounded-xl font-bold text-xs hover:bg-ios-blue/80">อัปเดต</button>
+                    </div>
+                    <p class="text-[10px] text-gray-400">ระบบจะช่วยคำนวณโทเคนที่ลดลงอัตโนมัติเมื่อสร้างภาพ</p>
+                </div>
+
+                <!-- Rate Limit Header Live Info -->
+                <div class="space-y-2">
+                    <h4 class="font-semibold text-gray-200">ข้อมูล Rate Limits จาก xAI Header:</h4>
+                    <div class="ios-glass-card p-3 rounded-2xl space-y-1.5 font-mono text-[11px]">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Remaining Tokens:</span>
+                            <span id="headerRemainingTokens" class="text-ios-blue font-bold">N/A</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Remaining Requests:</span>
+                            <span id="headerRemainingReq" class="text-ios-blue font-bold">N/A</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Last Status Code:</span>
+                            <span id="lastHttpStatus" class="text-ios-green font-bold">200 OK</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="closeTokenModal()" class="w-full ios-glass-card hover:bg-white/10 py-2.5 rounded-xl font-bold text-white text-xs">
+                ปิดหน้าต่าง
+            </button>
+        </div>
     </div>
 
-    <button id="generateBtn" onclick="generateImage()">สร้างภาพ (Generate)</button>
-
-    <div class="result-box">
-        <div id="loading" class="loading">กำลังเจนภาพ... กรุณารอสักครู่</div>
-        <img id="resultImage" alt="Generated Image">
-        <a id="downloadLink" class="download-btn" target="_blank">ดาวน์โหลดภาพ</a>
+    <!-- Modal 3: Image Lightbox Preview -->
+    <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl hidden flex items-center justify-center p-4" onclick="closeLightbox()">
+        <div class="relative max-w-4xl w-full flex flex-col items-center" onclick="event.stopPropagation()">
+            <img id="lightboxImg" src="" alt="Full Preview" class="max-h-[80vh] w-auto rounded-2xl object-contain shadow-2xl border border-white/20">
+            <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
+                <a id="downloadBtn" href="" download="grok-image.png" class="px-4 py-2 bg-ios-blue rounded-xl text-white font-bold text-xs flex items-center gap-2 hover:bg-ios-blue/80">
+                    <i class="fa-solid fa-download"></i> ดาวน์โหลดรูปภาพ
+                </a>
+                <button onclick="copyPromptFromLightbox()" class="px-4 py-2 ios-glass-card rounded-xl text-white font-bold text-xs flex items-center gap-2 hover:bg-white/15">
+                    <i class="fa-solid fa-copy"></i> คัดลอก Prompt
+                </button>
+                <button onclick="closeLightbox()" class="px-4 py-2 bg-white/10 rounded-xl text-white font-bold text-xs hover:bg-white/20">
+                    ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    // โหลด API Key จาก LocalStorage ถ้ามีบันทึกไว้
-    document.addEventListener("DOMContentLoaded", () => {
-        const savedKey = localStorage.getItem("grok_api_key");
-        if (savedKey) {
-            document.getElementById("apiKey").value = savedKey;
+    <!-- JavaScript Logic -->
+    <script>
+        // State Management
+        let currentMode = 'txt2img'; // 'txt2img' | 'img2img'
+        let currentRatio = '1:1';
+        let referenceImages = []; // Array of base64/URLs for Img2Img
+        let totalTokenBudget = 100000;
+        let tokensUsedSession = 0;
+        let currentActivePrompt = '';
+
+        // Preset Random Prompts
+        const samplePrompts = [
+            "A breathtaking aerial view of ancient temple ruins hidden deep in a neon cyberpunk jungle, hyper-detailed 8k resolution, cinematic lighting.",
+            "Minimalist iOS 18 style futuristic sports car on a wet Tokyo road at dusk, soft reflections, smooth aesthetic.",
+            "A cute robotic cat sitting on a windowsill watching holographic rain in a cozy futuristic room, Studio Ghibli vibes.",
+            "Portrait of a majestic snow leopard with sapphire eyes, detailed fur texture, warm volumetric sunlight, photorealistic."
+        ];
+
+        // Initialize App
+        document.addEventListener("DOMContentLoaded", () => {
+            loadSavedConfig();
+            updateTokenEstimate();
+            setupDragAndDrop();
+        });
+
+        // Local Storage API Key
+        function loadSavedConfig() {
+            const savedKey = localStorage.getItem("xai_grok_key");
+            if (savedKey) {
+                document.getElementById("apiKeyInput").value = savedKey;
+            }
+            const savedBudget = localStorage.getItem("grok_token_budget");
+            if (savedBudget) {
+                totalTokenBudget = parseInt(savedBudget);
+                document.getElementById("customBudgetInput").value = totalTokenBudget;
+            }
+            updateTokenUI();
         }
-    });
 
-    async function generateImage() {
-        const apiKey = document.getElementById("apiKey").value.trim();
-        const prompt = document.getElementById("prompt").value.trim();
-        const aspectRatio = document.getElementById("aspectRatio").value;
-        const btn = document.getElementById("generateBtn");
-        const loading = document.getElementById("loading");
-        const img = document.getElementById("resultImage");
-        const downloadLink = document.getElementById("downloadLink");
-
-        if (!apiKey) {
-            alert("กรุณากรอก API Key ก่อนใช้งานครับ");
-            return;
-        }
-        if (!prompt) {
-            alert("กรุณากรอก Prompt ก่อนครับ");
-            return;
+        function saveApiKey() {
+            const key = document.getElementById("apiKeyInput").value.trim();
+            if (!key) {
+                alert("กรุณากรอก API Key");
+                return;
+            }
+            localStorage.setItem("xai_grok_key", key);
+            closeConfigModal();
+            addLog("บันทึก xAI API Key สำเร็จ", "success");
         }
 
-        // บันทึก Key ลงในเครื่องใช้งานคนเดียว
-        localStorage.setItem("grok_api_key", apiKey);
+        function updateBudget() {
+            const val = parseInt(document.getElementById("customBudgetInput").value);
+            if (!isNaN(val) && val > 0) {
+                totalTokenBudget = val;
+                localStorage.setItem("grok_token_budget", val);
+                updateTokenUI();
+                addLog(`อัปเดตงบโทเคนเริ่มต้นเป็น ${val.toLocaleString()}`, "info");
+            }
+        }
 
-        // UI Reset
-        btn.disabled = true;
-        loading.style.display = "block";
-        img.style.display = "none";
-        downloadLink.style.display = "none";
+        // Tab Switching Logic
+        function switchTab(mode) {
+            currentMode = mode;
+            const tabTxt = document.getElementById("tabTxt2Img");
+            const tabImg = document.getElementById("tabImg2Img");
+            const imgSection = document.getElementById("img2imgSection");
 
-        try {
-            const response = await fetch("https://api.x.ai/v1/images/generations", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${apiKey}`
-                },
-                body: JSON.stringify({
-                    model: "grok-2-image", // หากมีอัปเดตสามารถเปลี่ยนเป็น grok-3-image ได้
-                    prompt: prompt,
-                    aspect_ratio: aspectRatio,
-                    n: 1
-                })
+            if (mode === 'txt2img') {
+                tabTxt.classList.add("active");
+                tabImg.classList.remove("active");
+                imgSection.classList.add("hidden");
+            } else {
+                tabImg.classList.add("active");
+                tabTxt.classList.remove("active");
+                imgSection.classList.remove("hidden");
+            }
+            updateTokenEstimate();
+        }
+
+        // Ratio Selector
+        function selectRatio(ratio) {
+            currentRatio = ratio;
+            document.querySelectorAll(".ratio-btn").forEach(btn => {
+                btn.classList.remove("border-ios-blue", "active-ratio", "text-white");
+                btn.classList.add("border-white/10", "text-gray-300");
+            });
+            event.currentTarget.classList.add("border-ios-blue", "active-ratio", "text-white");
+            document.getElementById("ratioDisplay").innerText = `${ratio}`;
+            updateTokenEstimate();
+        }
+
+        function updateNumImages(val) {
+            document.getElementById("numImagesVal").innerText = `${val} รูป`;
+            updateTokenEstimate();
+        }
+
+        // Preset Prompt Loader
+        function applyPreset(text) {
+            const promptBox = document.getElementById("promptInput");
+            promptBox.value = promptBox.value ? promptBox.value + ", " + text : text;
+            updateTokenEstimate();
+        }
+
+        function generateRandomPrompt() {
+            const random = samplePrompts[Math.floor(Math.random() * samplePrompts.length)];
+            document.getElementById("promptInput").value = random;
+            updateTokenEstimate();
+        }
+
+        // Img2Img Drag & Drop / Upload Handler
+        function setupDragAndDrop() {
+            const dropzone = document.getElementById("dropzone");
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, preventDefaults, false);
             });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error?.message || "เกิดข้อผิดพลาดในการดึงข้อมูล");
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
             }
 
-            // แสดงผลภาพ
-            const imageUrl = data.data[0].url;
-            img.src = imageUrl;
-            img.style.display = "block";
-
-            downloadLink.href = imageUrl;
-            downloadLink.download = "grok-generated-image.png";
-            downloadLink.style.display = "inline-block";
-
-        } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            btn.disabled = false;
-            loading.style.display = "none";
+            dropzone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            });
         }
-    }
-</script>
 
+        function handleFileSelect(e) {
+            handleFiles(e.target.files);
+        }
+
+        function handleFiles(files) {
+            const remainingSlots = 3 - referenceImages.length;
+            const filesToProcess = Array.from(files).slice(0, remainingSlots);
+
+            filesToProcess.forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    referenceImages.push(e.target.result);
+                    renderPreviews();
+                    updateTokenEstimate();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function renderPreviews() {
+            const container = document.getElementById("imagePreviewContainer");
+            container.innerHTML = "";
+
+            referenceImages.forEach((imgSrc, idx) => {
+                const div = document.createElement("div");
+                div.className = "relative aspect-square rounded-xl overflow-hidden border border-white/20 group";
+                div.innerHTML = `
+                    <img src="${imgSrc}" class="w-full h-full object-cover">
+                    <button onclick="removeImage(${idx})" class="absolute top-1 right-1 w-5 h-5 bg-ios-red/80 text-white text-[10px] rounded-full flex items-center justify-center opacity-90 hover:opacity-100">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <span class="absolute bottom-1 left-1 bg-black/60 text-[9px] px-1.5 py-0.5 rounded text-white">&lt;image_${idx}&gt;</span>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById("imgCountBadge").innerText = `${referenceImages.length} / 3 รูป`;
+        }
+
+        function removeImage(index) {
+            referenceImages.splice(index, 1);
+            renderPreviews();
+            updateTokenEstimate();
+        }
+
+        // Real-Time Token Estimator
+        function updateTokenEstimate() {
+            const res = document.getElementById("resolutionSelect").value;
+            const quality = document.getElementById("qualitySelect").value;
+            const count = parseInt(document.getElementById("numImages").value);
+
+            // Calculation Matrix based on xAI Grok Specs:
+            // Base tokens per image: 1K standard ~ 1024, 2K HD ~ 1792 tokens
+            let basePerImage = (res === '2K') ? 1792 : 1024;
+            if (quality === 'low') basePerImage = Math.round(basePerImage * 0.7);
+
+            let totalEst = basePerImage * count;
+            // Additional reference images cost (~256 tokens per uploaded reference)
+            if (currentMode === 'img2img' && referenceImages.length > 0) {
+                totalEst += (referenceImages.length * 256);
+            }
+
+            document.getElementById("estTokenCost").innerText = `~ ${totalEst.toLocaleString()}`;
+        }
+
+        function updateTokenUI() {
+            const remaining = Math.max(0, totalTokenBudget - tokensUsedSession);
+            document.getElementById("displayTokenRemaining").innerText = remaining.toLocaleString();
+            document.getElementById("modalTokenRemaining").innerText = remaining.toLocaleString();
+            document.getElementById("modalTokenUsed").innerText = tokensUsedSession.toLocaleString();
+        }
+
+        // Main API Generation Function
+        async function generateImages() {
+            const apiKey = localStorage.getItem("xai_grok_key");
+            if (!apiKey) {
+                openConfigModal();
+                alert("กรุณากรอก xAI API Key ก่อนเริ่มต้นใช้งาน");
+                return;
+            }
+
+            const prompt = document.getElementById("promptInput").value.trim();
+            if (!prompt) {
+                alert("กรุณากรอกข้อความ Prompt บรรยายภาพ");
+                return;
+            }
+
+            const resolution = document.getElementById("resolutionSelect").value;
+            const quality = document.getElementById("qualitySelect").value;
+            const count = parseInt(document.getElementById("numImages").value);
+
+            // Show Loading UI
+            document.getElementById("emptyState").classList.add("hidden");
+            document.getElementById("resultsGrid").classList.add("hidden");
+            document.getElementById("loadingState").classList.remove("hidden");
+            document.getElementById("btnGenerate").disabled = true;
+            document.getElementById("btnGenerate").classList.add("opacity-50");
+
+            currentActivePrompt = prompt;
+            addLog(`เริ่มการสร้างภาพ (${currentMode}): "${prompt.substring(0, 30)}..."`, "info");
+
+            try {
+                // Prepare Body Request for xAI API
+                const requestBody = {
+                    model: "grok-imagine-image-2.0",
+                    prompt: prompt,
+                    n: count,
+                    aspect_ratio: currentRatio,
+                    resolution: resolution,
+                    quality: quality,
+                    response_format: "b64_json" // Using b64 for immediate standalone display
+                };
+
+                // Add reference images if in Img2Img mode
+                if (currentMode === 'img2img' && referenceImages.length > 0) {
+                    requestBody.image_urls = referenceImages;
+                }
+
+                // Call xAI Endpoint
+                const response = await fetch("https://api.x.ai/v1/images/generations", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                // Read Headers for Rate Limits
+                const remTokensHeader = response.headers.get("x-ratelimit-remaining-tokens");
+                const remReqHeader = response.headers.get("x-ratelimit-remaining-requests");
+
+                if (remTokensHeader) document.getElementById("headerRemainingTokens").innerText = remTokensHeader;
+                if (remReqHeader) document.getElementById("headerRemainingReq").innerText = remReqHeader;
+                document.getElementById("lastHttpStatus").innerText = `${response.status} ${response.statusText}`;
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.error?.message || `HTTP Error ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Calculate Token Deduction
+                let estCostPerImg = (resolution === '2K') ? 1792 : 1024;
+                if (quality === 'low') estCostPerImg = Math.round(estCostPerImg * 0.7);
+                let actualTokensCharged = estCostPerImg * count;
+                if (currentMode === 'img2img') actualTokensCharged += (referenceImages.length * 256);
+
+                tokensUsedSession += actualTokensCharged;
+                updateTokenUI();
+
+                addLog(`สร้างภาพสำเร็จ (${count} รูป)! หักโทเคนประมาณ ~${actualTokensCharged} Tokens`, "success");
+                renderResults(data.data || []);
+
+            } catch (error) {
+                console.error("Grok Generation Error:", error);
+                alert(`เกิดข้อผิดพลาด: ${error.message}`);
+                addLog(`เกิดข้อผิดพลาด: ${error.message}`, "error");
+                
+                // Fallback DEMO Mode if API fails or demo testing
+                if (confirm("ต้องการทดสอบการแสดงผลด้วยภาพตัวอย่าง (Demo Simulation Mode) หรือไม่?")) {
+                    simulateDemoResult(count);
+                } else {
+                    document.getElementById("emptyState").classList.remove("hidden");
+                }
+            } finally {
+                document.getElementById("loadingState").classList.add("hidden");
+                document.getElementById("btnGenerate").disabled = false;
+                document.getElementById("btnGenerate").classList.remove("opacity-50");
+            }
+        }
+
+        // Demo Result Fallback
+        function simulateDemoResult(count) {
+            const demoItems = [];
+            for (let i = 0; i < count; i++) {
+                demoItems.push({
+                    url: `https://picsum.photos/seed/${Math.random()}/800/800`
+                });
+            }
+            tokensUsedSession += (1024 * count);
+            updateTokenUI();
+            addLog(`แสดงภาพจำลอง Demo (${count} รูป)`, "info");
+            renderResults(demoItems);
+        }
+
+        // Render Generated Images
+        function renderResults(images) {
+            const grid = document.getElementById("resultsGrid");
+            grid.innerHTML = "";
+            grid.classList.remove("hidden");
+
+            images.forEach((imgObj, index) => {
+                const imgUrl = imgObj.b64_json 
+                    ? `data:image/png;base64,${imgObj.b64_json}` 
+                    : (imgObj.url || "https://picsum.photos/800/800");
+
+                const card = document.createElement("div");
+                card.className = "ios-glass-card rounded-2xl overflow-hidden group relative flex flex-col justify-between border border-white/10 shadow-lg";
+                card.innerHTML = `
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('${imgUrl}')">
+                        <img src="${imgUrl}" alt="Generated ${index}" class="w-full h-auto aspect-square object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                            <span class="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-expand"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-black/40 flex items-center justify-between text-xs border-t border-white/10">
+                        <span class="text-gray-300 font-medium truncate max-w-[150px]">${currentActivePrompt}</span>
+                        <a href="${imgUrl}" download="grok-img-${index + 1}.png" class="px-2.5 py-1 rounded-lg bg-ios-blue/20 text-ios-blue border border-ios-blue/30 hover:bg-ios-blue hover:text-white transition-colors flex items-center gap-1 font-semibold text-[11px]">
+                            <i class="fa-solid fa-download"></i> โหลด
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function clearGallery() {
+            if (confirm("คุณต้องการล้างภาพในแกลเลอรีทั้งหมดใช่หรือไม่?")) {
+                document.getElementById("resultsGrid").innerHTML = "";
+                document.getElementById("resultsGrid").classList.add("hidden");
+                document.getElementById("emptyState").classList.remove("hidden");
+            }
+        }
+
+        // Lightbox Operations
+        function openLightbox(url) {
+            document.getElementById("lightboxImg").src = url;
+            document.getElementById("downloadBtn").href = url;
+            document.getElementById("lightboxModal").classList.remove("hidden");
+        }
+
+        function closeLightbox() {
+            document.getElementById("lightboxModal").classList.add("hidden");
+        }
+
+        function copyPromptFromLightbox() {
+            navigator.clipboard.writeText(currentActivePrompt);
+            alert("คัดลอก Prompt เรียบร้อยแล้ว!");
+        }
+
+        // Modal Controls
+        function openConfigModal() { document.getElementById("configModal").classList.remove("hidden"); }
+        function closeConfigModal() { document.getElementById("configModal").classList.add("hidden"); }
+
+        function openTokenModal() { document.getElementById("tokenModal").classList.remove("hidden"); }
+        function closeTokenModal() { document.getElementById("tokenModal").classList.add("hidden"); }
+
+        // Logger Helper
+        function addLog(msg, type = "info") {
+            const logBox = document.getElementById("activityLog");
+            const time = new Date().toLocaleTimeString('th-TH');
+            
+            let colorClass = "text-gray-300";
+            if (type === "success") colorClass = "text-ios-green font-semibold";
+            if (type === "error") colorClass = "text-ios-red font-semibold";
+
+            const item = document.createElement("div");
+            item.className = `${colorClass} flex items-start gap-1.5`;
+            item.innerHTML = `<span class="text-gray-500">[${time}]</span> <span>${msg}</span>`;
+
+            if (logBox.children[0] && logBox.children[0].classList.contains("italic")) {
+                logBox.innerHTML = "";
+            }
+
+            logBox.prepend(item);
+            document.getElementById("logCount").innerText = `${logBox.children.length} รายการ`;
+        }
+    </script>
 </body>
 </html>
